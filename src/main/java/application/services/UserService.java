@@ -20,37 +20,37 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService{
 
-        @PersistenceContext
-        private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-        private UserRepo userRepo;
+    private UserRepo userRepo;
 
     private PasswordEncoder encoder;
 
 
     @Autowired
-        public UserService(UserRepo userRepo, PasswordEncoder encoder) {
+    public UserService(UserRepo userRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
         this.encoder = encoder;
-        }
+    }
 
 
-        @Override
-      //  @Transactional
-        public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
 
-            // em.find(AppUser.class, username);
+        // em.find(AppUser.class, username);
 
-            return em.createQuery(
-                            "SELECT user FROM BlogUser user WHERE user.loginName  = :loginName",
-                            BlogUser.class)
-                    .setParameter("loginName", loginName)
-                    .getSingleResult();
-        }
+        return em.createQuery(
+                        "SELECT user FROM BlogUser user WHERE user.loginName  = :loginName",
+                        BlogUser.class)
+                .setParameter("loginName", loginName)
+                .getSingleResult();
+    }
 
-        private String getQuery(){
-            return "SELECT * FROM user";
-        }
+    private String getQuery(){
+        return "SELECT * FROM user";
+    }
 
     @Transactional
     public BlogUser getLoggedInUser(){
@@ -65,16 +65,16 @@ public class UserService implements UserDetailsService{
         return  null;
     }
 
-        @Transactional
-        public List<BlogUser> getAllUsers() {
-            try {
+    @Transactional
+    public List<BlogUser> getAllUsers() {
+        try {
                 /*List<BlogUser> blogUsers = em.createQuery(getQuery(), BlogUser.class)
                         .getResultList();*/
 
-                return userRepo.findAll();}
-            catch (Exception e){
-                e.printStackTrace();
-            }
+            return userRepo.findAll();}
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return null;}
 
     @Transactional
@@ -111,14 +111,14 @@ public class UserService implements UserDetailsService{
             userRepo.save(blogUser);
         }*/
 
-        @Transactional
-        public void changePassword(BlogUser blogUser) {
-            BlogUser blogUserFromDB = (BlogUser) loadUserByUsername(blogUser.getUsername());
-            blogUserFromDB.setPassword(blogUser.getPassword());
-        }
-
-
-
+    @Transactional
+    public void changePassword(BlogUser blogUser) {
+        BlogUser blogUserFromDB = (BlogUser) loadUserByUsername(blogUser.getUsername());
+        blogUserFromDB.setPassword(blogUser.getPassword());
     }
+
+
+
+}
 
 
