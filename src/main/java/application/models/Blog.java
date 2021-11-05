@@ -28,8 +28,6 @@ public class Blog {
     @OneToMany(mappedBy = "blog")
     private List<BlogPost> blogPosts;
 
-
-
 }
 
 

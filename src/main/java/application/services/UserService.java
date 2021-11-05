@@ -48,9 +48,6 @@ public class UserService implements UserDetailsService{
                 .getSingleResult();
     }
 
-    private String getQuery(){
-        return "SELECT * FROM user";
-    }
 
     @Transactional
     public BlogUser getLoggedInUser(){
@@ -83,6 +80,9 @@ public class UserService implements UserDetailsService{
         try {
             userToRegister.setPassword(encoder.encode(userToRegister.getPassword()));
 
+
+      /*    userRepo.save(blogUser);
+        */
             em.persist(userToRegister);
             return true;
         }
@@ -96,7 +96,6 @@ public class UserService implements UserDetailsService{
         String userPw = encoder.encode("user");
         String adminPw = encoder.encode("admin");
 
-
         BlogUser user = new BlogUser( "user", userPw, Role.REG_USER);
         BlogUser admin = new BlogUser( "admin", adminPw, Role.ADMIN);
 
@@ -106,10 +105,6 @@ public class UserService implements UserDetailsService{
 
     }
 
-      /* @Transactional
-        public void registerUser(BlogUser blogUser) {
-            userRepo.save(blogUser);
-        }*/
 
     @Transactional
     public void changePassword(BlogUser blogUser) {
